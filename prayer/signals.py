@@ -1,0 +1,7 @@
+"""
+Prayer request system signals
+"""
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+# Signal handlers will be added here

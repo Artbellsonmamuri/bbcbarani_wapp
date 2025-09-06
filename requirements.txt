@@ -1,60 +1,39 @@
+# Bible Baptist Church CMS - Complete Requirements
 # Django Framework
 Django>=4.2.0,<5.0
 djangorestframework>=3.14.0
-django-cors-headers>=4.0.0
-django-filter>=23.0
-django-crispy-forms>=2.0
-crispy-bootstrap5>=0.7
 
 # Database
 mysqlclient>=2.2.0
 
-# Media & File Handling
+# CORS and API
+django-cors-headers>=4.0.0
+django-filter>=23.0
+
+# Forms and UI
+django-crispy-forms>=2.0
+crispy-bootstrap5>=0.7
+
+# Media handling
 Pillow>=10.0.0
 python-magic>=0.4.27
 
-# Email
-django-anymail>=10.0
-
-# Authentication & Security  
-django-allauth>=0.57.0
-django-otp>=1.2.0
-django-ratelimit>=4.1.0
-
-# Utilities
+# Environment variables
 python-dotenv>=1.0.0
-celery>=5.3.0
-redis>=5.0.0
-django-celery-beat>=2.5.0
 
-# Production Server
+# Production server
 gunicorn>=21.2.0
 whitenoise>=6.6.0
 
-# Monitoring & Error Tracking
-sentry-sdk>=1.38.0
-
-# Performance
+# Caching
+redis>=5.0.0
 django-redis>=5.4.0
 
-# API Documentation
-drf-spectacular>=0.26.5
+# Task queue (optional)
+celery>=5.3.0
 
-# Static file compression
-django-compressor>=4.4
+# Development tools
+django-extensions>=3.2.0
 
-# Caching
-django-cachalot>=2.6.1
-
-# Search
-django-haystack>=3.2.1
-
-# Testing (optional for production)
-coverage>=7.3.0
-factory-boy>=3.3.0
-
-# Development tools (commented out for production)
-# django-debug-toolbar>=4.2.0
-# django-extensions>=3.2.3
-# flake8>=6.1.0
-# black>=23.9.0
+# Security
+django-ratelimit>=4.1.0

@@ -12,8 +12,8 @@ if __name__ == '__main__':
     except ImportError:
         pass
 
-    # Determine which settings to use
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'bbcbarani.settings.dev')
+    # Set default settings module
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'bbcbarani.settings.prod')
 
     try:
         from django.core.management import execute_from_command_line

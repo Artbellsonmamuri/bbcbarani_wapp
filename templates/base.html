@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Bible Baptist Church Barani{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">Bible Baptist Church Barani</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/admin/">Admin</a>
+                <a class="nav-link" href="/api/">API</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mt-4">
+        {% block content %}
+        <div class="jumbotron">
+            <h1 class="display-4">Welcome to Bible Baptist Church Barani</h1>
+            <p class="lead">Your church management system is running successfully!</p>
+            <hr class="my-4">
+            <p>Access the admin panel to manage your church content.</p>
+            <a class="btn btn-primary btn-lg" href="/admin/" role="button">Go to Admin</a>
+        </div>
+        {% endblock %}
+    </main>
+
+    <footer class="bg-light py-4 mt-5">
+        <div class="container text-center">
+            <p>&copy; {% now "Y" %} Bible Baptist Church Barani. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
