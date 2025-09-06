@@ -1,0 +1,33 @@
+<div id="cookie-consent" class="alert alert-info alert-dismissible position-fixed bottom-0 start-0 end-0 m-3" style="z-index: 9999; display: none;">
+    <div class="container">
+        <div class="d-flex align-items-center justify-content-between">
+            <div>
+                <strong>We use cookies</strong> to enhance your browsing experience and analyze site traffic. 
+                <a href="{% url 'cms:privacy_policy' %}" class="alert-link">Learn more</a>
+            </div>
+            <div>
+                <button type="button" class="btn btn-sm btn-outline-primary me-2" onclick="acceptCookies()">Accept</button>
+                <button type="button" class="btn-close" onclick="dismissCookies()"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function acceptCookies() {
+    localStorage.setItem('cookiesAccepted', 'true');
+    document.getElementById('cookie-consent').style.display = 'none';
+}
+
+function dismissCookies() {
+    localStorage.setItem('cookiesDismissed', 'true');
+    document.getElementById('cookie-consent').style.display = 'none';
+}
+
+// Show cookie consent if not previously accepted/dismissed
+if (!localStorage.getItem('cookiesAccepted') && !localStorage.getItem('cookiesDismissed')) {
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('cookie-consent').style.display = 'block';
+    });
+}
+</script>

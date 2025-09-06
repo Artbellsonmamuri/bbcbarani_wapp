@@ -1,0 +1,113 @@
+{% extends 'admin/base_site.html' %}
+
+{% block title %}Blog Dashboard - Bible Baptist Church CMS{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1>Blog Dashboard</h1>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <h5>{{ total_posts }}</h5>
+                    <p>Total Posts</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <h5>{{ published_posts }}</h5>
+                    <p>Published</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-warning">
+                <div class="card-body">
+                    <h5>{{ draft_posts }}</h5>
+                    <p>Drafts</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-danger">
+                <div class="card-body">
+                    <h5>{{ pending_comments }}</h5>
+                    <p>Pending Comments</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Recent Posts</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Author</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Comments</th>
+                                    <th>Views</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for post in recent_posts %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ post.get_absolute_url }}">{{ post.title|truncatechars:40 }}</a>
+                                        {% if post.featured %}<span class="badge bg-warning">Featured</span>{% endif %}
+                                    </td>
+                                    <td>{{ post.author.get_full_name }}</td>
+                                    <td>
+                                        <span class="badge bg-{% if post.status == 'published' %}success{% elif post.status == 'draft' %}warning{% else %}secondary{% endif %}">
+                                            {{ post.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td>{{ post.updated_at|date:"M d, Y" }}</td>
+                                    <td>{{ post.comment_count }}</td>
+                                    <td>{{ post.view_count }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Recent Comments</h5>
+                </div>
+                <div class="card-body">
+                    {% for comment in recent_comments %}
+                    <div class="border-bottom mb-3 pb-2">
+                        <h6>{{ comment.get_author_name }}</h6>
+                        <p class="small">{{ comment.content|truncatechars:60 }}</p>
+                        <small class="text-muted">
+                            on <a href="{{ comment.blog_post.get_absolute_url }}">{{ comment.blog_post.title|truncatechars:30 }}</a>
+                        </small>
+                        <span class="badge bg-{% if comment.status == 'approved' %}success{% elif comment.status == 'pending' %}warning{% else %}danger{% endif %} float-end">
+                            {{ comment.get_status_display }}
+                        </span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

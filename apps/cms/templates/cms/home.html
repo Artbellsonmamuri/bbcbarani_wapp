@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ welcome_screen.welcome_message|default:"Welcome to Bible Baptist Church Barani" }}{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+{% if welcome_screen %}
+<section class="hero-section">
+    <div id="heroCarousel" class="carousel slide hero-carousel" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% for image in welcome_screen.carousel_images.all %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}" 
+                     style="background-image: url('{{ image.file.url }}');">
+                </div>
+            {% empty %}
+                <div class="carousel-item active" style="background-image: url('{% static 'images/default-hero.jpg' %}');">
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="hero-overlay">
+            <div class="container text-center text-white">
+                <h1 class="display-4 mb-4">{{ welcome_screen.welcome_message }}</h1>
+                {% if welcome_screen.subtitle %}
+                    <p class="lead mb-4">{{ welcome_screen.subtitle }}</p>
+                {% endif %}
+                {% if welcome_screen.cta_text and welcome_screen.cta_link %}
+                    <a href="{{ welcome_screen.cta_link }}" class="btn btn-primary btn-lg">
+                        {{ welcome_screen.cta_text }}
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Carousel controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+</section>
+{% endif %}
+
+<!-- Pastor Section -->
+{% if welcome_screen.pastor_name %}
+<section class="section-padding bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-4 text-center">
+                {% if welcome_screen.pastor_photo %}
+                    <img src="{{ welcome_screen.pastor_photo.url }}" alt="{{ welcome_screen.pastor_name }}" 
+                         class="img-fluid rounded-circle mb-3" style="max-width: 200px;">
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+                <h2>{{ welcome_screen.pastor_title }}</h2>
+                <h3 class="text-primary">{{ welcome_screen.pastor_name }}</h3>
+                {% if welcome_screen.pastor_bio %}
+                    <p class="lead">{{ welcome_screen.pastor_bio }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Service Schedule -->
+{% if services %}
+<section class="section-padding">
+    <div class="container">
+        <h2 class="text-center mb-5">Service Schedule</h2>
+        <div class="row">
+            {% for service in services %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ service.service_name }}</h5>
+                        <p class="card-text">
+                            <i class="fas fa-calendar"></i> {{ service.get_day_of_week_display }}<br>
+                            <i class="fas fa-clock"></i> {{ service.start_time|time:"g:i A" }}
+                            {% if service.end_time %} - {{ service.end_time|time:"g:i A" }}{% endif %}<br>
+                            <i class="fas fa-map-marker-alt"></i> {{ service.location_name }}
+                        </p>
+                        {% if service.description %}
+                            <p class="card-text">{{ service.description }}</p>
+                        {% endif %}
+                        {% if service.live_stream_enabled and service.live_stream_url %}
+                            <a href="{{ service.live_stream_url }}" class="btn btn-outline-primary btn-sm" target="_blank">
+                                <i class="fas fa-play"></i> Watch Live
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Recent Posts -->
+{% if recent_posts %}
+<section class="section-padding bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Latest News</h2>
+        <div class="row">
+            {% for post in recent_posts %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    {% if post.og_image %}
+                        <img src="{{ post.og_image.url }}" class="card-img-top" alt="{{ post.title }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.title }}</h5>
+                        <p class="card-text">{{ post.excerpt|default:post.body|truncatewords:20 }}</p>
+                        <a href="{{ post.get_absolute_url }}" class="btn btn-primary">Read More</a>
+                    </div>
+                    <div class="card-footer text-muted">
+                        {{ post.publish_date|date:"M d, Y" }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Prayer Request Section -->
+<section class="section-padding">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="prayer-request-form text-center">
+                    <h3 class="mb-4">Submit a Prayer Request</h3>
+                    <p class="mb-4">We believe in the power of prayer. Share your prayer request with us and our prayer team will lift you up.</p>
+                    <a href="{% url 'prayer:submit' %}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-praying-hands"></i> Submit Prayer Request
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

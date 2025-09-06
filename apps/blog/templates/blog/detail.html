@@ -1,0 +1,266 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}{{ post.title }} - Bible Baptist Church Barani{% endblock %}
+{% block meta_description %}{{ post.meta_description|default:post.excerpt }}{% endblock %}
+
+{% block extra_head %}
+<!-- Open Graph tags -->
+<meta property="og:title" content="{{ post.meta_title|default:post.title }}">
+<meta property="og:description" content="{{ post.meta_description|default:post.excerpt }}">
+<meta property="og:type" content="article">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+{% if post.og_image %}
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ post.og_image.file.url }}">
+{% elif post.featured_image %}
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ post.featured_image.file.url }}">
+{% endif %}
+<meta property="article:author" content="{{ post.author.get_full_name }}">
+<meta property="article:published_time" content="{{ post.published_date|date:'c' }}">
+{% if post.category %}
+    <meta property="article:section" content="{{ post.category.name }}">
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container section-padding">
+    <div class="row">
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <article class="blog-post">
+                <!-- Post Header -->
+                <header class="mb-4">
+                    {% if post.category %}
+                        <div class="mb-2">
+                            <span class="badge" style="background-color: {{ post.category.color }}">
+                                {{ post.category.name }}
+                            </span>
+                            {% if post.featured %}
+                                <span class="badge bg-warning">Featured</span>
+                            {% endif %}
+                            {% if post.sticky %}
+                                <span class="badge bg-info">Pinned</span>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
+                    <h1 class="display-5 mb-3">{{ post.title }}</h1>
+
+                    <div class="d-flex align-items-center text-muted mb-3">
+                        <div class="me-4">
+                            <i class="fas fa-user"></i> {{ post.author.get_full_name }}
+                            {% if post.co_authors.exists %}
+                                {% for co_author in post.co_authors.all %}
+                                    , {{ co_author.get_full_name }}
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="me-4">
+                            <i class="fas fa-calendar"></i> {{ post.published_date|date:"F d, Y" }}
+                        </div>
+                        <div class="me-4">
+                            <i class="fas fa-clock"></i> {{ post.reading_time }} min read
+                        </div>
+                        <div>
+                            <i class="fas fa-eye"></i> {{ post.view_count }} views
+                        </div>
+                    </div>
+
+                    {% if post.featured_image %}
+                        <img src="{{ post.featured_image.file.url }}" class="img-fluid rounded mb-4" 
+                             alt="{{ post.featured_image.alt_text }}">
+                    {% endif %}
+
+                    {% if post.excerpt %}
+                        <div class="lead mb-4">{{ post.excerpt }}</div>
+                    {% endif %}
+                </header>
+
+                <!-- Post Content -->
+                <div class="post-content">
+                    {{ post.content|safe }}
+                </div>
+
+                <!-- Tags -->
+                {% if post.tags %}
+                <div class="mt-4 pt-4 border-top">
+                    <h6>Tags:</h6>
+                    {% for tag in post.tags|split:"," %}
+                        <span class="badge bg-light text-dark me-2 mb-1">#{{ tag.strip }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <!-- Author Bio -->
+                <div class="mt-5 pt-4 border-top">
+                    <div class="d-flex">
+                        {% if post.author.avatar %}
+                            <img src="{{ post.author.avatar.url }}" class="rounded-circle me-3" 
+                                 style="width: 80px; height: 80px; object-fit: cover;">
+                        {% endif %}
+                        <div>
+                            <h5>{{ post.author.get_full_name }}</h5>
+                            {% if post.author.profile.bio %}
+                                <p>{{ post.author.profile.bio }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Comments Section -->
+                {% if post.allow_comments %}
+                <div class="mt-5 pt-4 border-top">
+                    <h4>Comments ({{ comment_count }})</h4>
+
+                    <!-- Comment Form -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5>Leave a Comment</h5>
+                            <form method="post" action="{% url 'blog:add_comment' post.slug %}" id="comment-form">
+                                {% csrf_token %}
+
+                                {% if not user.is_authenticated %}
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        {{ comment_form.guest_name.label_tag }}
+                                        {{ comment_form.guest_name }}
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        {{ comment_form.guest_email.label_tag }}
+                                        {{ comment_form.guest_email }}
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    {{ comment_form.guest_website.label_tag }}
+                                    {{ comment_form.guest_website }}
+                                </div>
+                                {% endif %}
+
+                                <div class="mb-3">
+                                    {{ comment_form.content.label_tag }}
+                                    {{ comment_form.content }}
+                                </div>
+
+                                {{ comment_form.parent }}
+
+                                <button type="submit" class="btn btn-primary">Post Comment</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Comments List -->
+                    <div class="mt-4">
+                        {% for comment in comments %}
+                            <div class="comment mb-4" id="comment-{{ comment.id }}">
+                                <div class="d-flex">
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h6 class="mb-1">{{ comment.get_author_name }}</h6>
+                                            <small class="text-muted">{{ comment.created_at|date:"M d, Y g:i A" }}</small>
+                                        </div>
+                                        <p class="mb-2">{{ comment.content|linebreaks }}</p>
+                                        <button class="btn btn-sm btn-outline-primary reply-btn" 
+                                                data-comment-id="{{ comment.id }}">Reply</button>
+                                    </div>
+                                </div>
+
+                                <!-- Replies -->
+                                {% if comment.replies.exists %}
+                                    <div class="comment-thread mt-3">
+                                        {% for reply in comment.replies.all %}
+                                            <div class="comment mb-3">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <h6 class="mb-1">{{ reply.get_author_name }}</h6>
+                                                    <small class="text-muted">{{ reply.created_at|date:"M d, Y g:i A" }}</small>
+                                                </div>
+                                                <p class="mb-0">{{ reply.content|linebreaks }}</p>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% empty %}
+                        <p class="text-muted">No comments yet. Be the first to comment!</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </article>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Related Posts -->
+            {% if related_posts %}
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5>Related Posts</h5>
+                    {% for related in related_posts %}
+                    <div class="d-flex mb-3">
+                        {% if related.featured_image %}
+                            <img src="{{ related.featured_image.file.url }}" class="me-3" 
+                                 style="width: 60px; height: 60px; object-fit: cover;">
+                        {% endif %}
+                        <div>
+                            <h6 class="mb-1">
+                                <a href="{{ related.get_absolute_url }}" class="text-decoration-none">
+                                    {{ related.title|truncatewords:8 }}
+                                </a>
+                            </h6>
+                            <small class="text-muted">{{ related.published_date|date:"M d" }}</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Categories -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5>Categories</h5>
+                    <ul class="list-unstyled">
+                        {% for category in categories %}
+                        <li class="mb-2">
+                            <a href="{% url 'blog:list' %}?category={{ category.slug }}" class="text-decoration-none">
+                                <span class="badge me-2" style="background-color: {{ category.color }}">{{ category.post_count }}</span>
+                                {{ category.name }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="card">
+                <div class="card-body">
+                    <h5>Stay Updated</h5>
+                    <p>Subscribe to get the latest blog posts and church news.</p>
+                    <form method="post" action="{% url 'blog:subscribe' %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <input type="email" name="email" class="form-control" placeholder="Your email" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle reply buttons
+    const replyButtons = document.querySelectorAll('.reply-btn');
+    replyButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const commentId = this.getAttribute('data-comment-id');
+            document.querySelector('#id_parent').value = commentId;
+            document.querySelector('#comment-form').scrollIntoView();
+        });
+    });
+});
+</script>
+{% endblock %}

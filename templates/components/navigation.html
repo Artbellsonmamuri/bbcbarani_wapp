@@ -1,0 +1,118 @@
+<!-- Main Navigation Component -->
+<nav class="main-navigation bg-white border-top" id="main-navigation">
+    <div class="container">
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav me-auto">
+
+                <!-- Home -->
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" 
+                       href="{% url 'cms:home' %}">
+                        <i class="fas fa-home me-1"></i>Home
+                    </a>
+                </li>
+
+                <!-- About Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-info-circle me-1"></i>About Us
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'cms:who_we_are' %}">
+                            <i class="fas fa-users me-2"></i>Who We Are
+                        </a></li>
+                        <li><a class="dropdown-item" href="{% url 'cms:articles_of_faith' %}">
+                            <i class="fas fa-cross me-2"></i>Articles of Faith
+                        </a></li>
+                        <li><a class="dropdown-item" href="{% url 'cms:pastor' %}">
+                            <i class="fas fa-user-tie me-2"></i>Our Pastor
+                        </a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'cms:contact' %}">
+                            <i class="fas fa-envelope me-2"></i>Contact Us
+                        </a></li>
+                    </ul>
+                </li>
+
+                <!-- Ministries -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle {% if 'ministries' in request.path %}active{% endif %}" 
+                       href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-hands-helping me-1"></i>Ministries
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'ministries:list' %}">
+                            <i class="fas fa-list me-2"></i>All Ministries
+                        </a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        {% comment %}<!-- Dynamic ministry list would be populated by context processor -->{% endcomment %}
+                        <li><a class="dropdown-item" href="#">
+                            <i class="fas fa-child me-2"></i>Children's Ministry
+                        </a></li>
+                        <li><a class="dropdown-item" href="#">
+                            <i class="fas fa-users me-2"></i>Youth Ministry
+                        </a></li>
+                        <li><a class="dropdown-item" href="#">
+                            <i class="fas fa-female me-2"></i>Women's Ministry
+                        </a></li>
+                        <li><a class="dropdown-item" href="#">
+                            <i class="fas fa-male me-2"></i>Men's Ministry
+                        </a></li>
+                    </ul>
+                </li>
+
+                <!-- Events -->
+                <li class="nav-item">
+                    <a class="nav-link {% if 'events' in request.path %}active{% endif %}" 
+                       href="{% url 'events:list' %}">
+                        <i class="fas fa-calendar me-1"></i>Events
+                    </a>
+                </li>
+
+                <!-- Blog -->
+                <li class="nav-item">
+                    <a class="nav-link {% if 'blog' in request.path %}active{% endif %}" 
+                       href="{% url 'blog:list' %}">
+                        <i class="fas fa-blog me-1"></i>Blog
+                    </a>
+                </li>
+
+                <!-- Prayer Request -->
+                <li class="nav-item">
+                    <a class="nav-link {% if 'prayer' in request.path %}active{% endif %}" 
+                       href="{% url 'prayer:submit' %}">
+                        <i class="fas fa-pray me-1"></i>Prayer Request
+                    </a>
+                </li>
+
+                <!-- Give -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#" target="_blank">
+                        <i class="fas fa-heart me-1 text-danger"></i>Give
+                    </a>
+                </li>
+
+            </ul>
+
+            <!-- Right Side Actions -->
+            <div class="navbar-nav">
+                <!-- Search -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-search"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end p-3" style="min-width: 300px;">
+                        <form method="get" action="{% url 'cms:search' %}">
+                            <div class="input-group">
+                                <input type="search" name="q" class="form-control" placeholder="Search..." required>
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </li>
+            </div>
+        </div>
+    </div>
+</nav>

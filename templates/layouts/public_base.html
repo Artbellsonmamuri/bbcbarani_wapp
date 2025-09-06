@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body_class %}public-site{% endblock %}
+
+{% block header %}
+    <header class="site-header">
+        <!-- Top Bar -->
+        <div class="top-bar bg-primary text-white py-2">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <div class="contact-info">
+                            <span class="me-3">
+                                <i class="fas fa-phone me-1"></i>
+                                <a href="tel:+1234567890" class="text-white text-decoration-none">+123 456 7890</a>
+                            </span>
+                            <span>
+                                <i class="fas fa-envelope me-1"></i>
+                                <a href="mailto:info@bbcbarani.org" class="text-white text-decoration-none">info@bbcbarani.org</a>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <div class="social-links">
+                            <a href="#" class="text-white me-3" title="Facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="text-white me-3" title="Twitter">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="text-white me-3" title="YouTube">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                            <a href="#" class="text-white" title="Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Header -->
+        <div class="main-header bg-white shadow-sm">
+            <div class="container">
+                <div class="row align-items-center py-3">
+                    <div class="col-md-3">
+                        <div class="logo">
+                            <a href="{% url 'cms:home' %}" class="text-decoration-none">
+                                <img src="{% static 'images/logo.png' %}" alt="Bible Baptist Church Barani" class="logo-img">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="church-info text-center">
+                            <h1 class="church-name h3 mb-1 text-primary">Bible Baptist Church Barani</h1>
+                            <p class="church-tagline mb-0 text-muted">Serving God with love and faith</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 text-end">
+                        {% if user.is_authenticated %}
+                            <div class="user-menu dropdown">
+                                <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                    <i class="fas fa-user me-2"></i>
+                                    {{ user.get_full_name|default:user.username }}
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="{% url 'accounts:profile' %}">
+                                        <i class="fas fa-user me-2"></i>My Profile
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="{% url 'notifications:list' %}">
+                                        <i class="fas fa-bell me-2"></i>Notifications
+                                    </a></li>
+                                    {% if user.is_staff %}
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{% url 'admin:index' %}">
+                                        <i class="fas fa-cogs me-2"></i>Admin Panel
+                                    </a></li>
+                                    {% endif %}
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{% url 'accounts:logout' %}">
+                                        <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                    </a></li>
+                                </ul>
+                            </div>
+                        {% else %}
+                            <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary me-2">
+                                <i class="fas fa-sign-in-alt me-1"></i>Login
+                            </a>
+                            <a href="{% url 'accounts:register' %}" class="btn btn-primary">
+                                <i class="fas fa-user-plus me-1"></i>Join Us
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock %}

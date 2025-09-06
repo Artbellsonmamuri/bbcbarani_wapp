@@ -1,0 +1,174 @@
+{% extends 'admin/base_site.html' %}
+
+{% block title %}Event Check-in: {{ event.title }} - Bible Baptist Church CMS{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Check-in: {{ event.title }}</h1>
+        <div>
+            <span class="badge bg-info">{{ checked_in_count }} checked in</span>
+            <span class="badge bg-primary">{{ registrations|length }} registered</span>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Registration List -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Registered Attendees</h5>
+                </div>
+                <div class="card-body">
+                    {% if registrations %}
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Attendees</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for registration in registrations %}
+                                    <tr {% if registration.checked_in_at %}class="table-success"{% endif %}>
+                                        <td>{{ registration.get_registrant_name }}</td>
+                                        <td>{{ registration.get_registrant_email }}</td>
+                                        <td>{{ registration.number_of_attendees }}</td>
+                                        <td>
+                                            {% if registration.checked_in_at %}
+                                                <span class="badge bg-success">Checked In</span>
+                                                <br><small class="text-muted">{{ registration.checked_in_at|date:"g:i A" }}</small>
+                                            {% else %}
+                                                <span class="badge bg-warning">Not Checked In</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if not registration.checked_in_at %}
+                                                <button type="submit" name="registration_id" value="{{ registration.id }}" 
+                                                        class="btn btn-success btn-sm">Check In</button>
+                                            {% else %}
+                                                <small class="text-muted">Checked in by {{ registration.checked_in_by.get_full_name }}</small>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                    {% else %}
+                    <p class="text-muted">No registrations for this event.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Walk-in Registration -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Walk-in Registration</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label>Name</label>
+                            <input type="text" name="walk_in_name" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label>Email (optional)</label>
+                            <input type="email" name="walk_in_email" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Check In Walk-in</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Check-in Summary -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5>Check-in Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-6">
+                            <h4 class="text-primary">{{ checked_in_count }}</h4>
+                            <p class="small">Checked In</p>
+                        </div>
+                        <div class="col-6">
+                            <h4 class="text-warning">{{ registrations|length|add:"-"|add:checked_in_count }}</h4>
+                            <p class="small">Pending</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Check-ins -->
+    {% if attendance_records %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Recent Check-ins</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Check-in Time</th>
+                                    <th>Checked in By</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for attendance in attendance_records %}
+                                <tr>
+                                    <td>
+                                        {% if attendance.registration %}
+                                            {{ attendance.registration.get_registrant_name }}
+                                        {% else %}
+                                            {{ attendance.walk_in_name }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if attendance.registration %}
+                                            <span class="badge bg-primary">Registered</span>
+                                        {% else %}
+                                            <span class="badge bg-info">Walk-in</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ attendance.checked_in_at|date:"g:i A" }}</td>
+                                    <td>{{ attendance.checked_in_by.get_full_name }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Select all functionality
+    document.getElementById('select-all').addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('input[name="comment_ids"]');
+        checkboxes.forEach(cb => cb.checked = this.checked);
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Event Calendar - Bible Baptist Church Barani{% endblock %}
+
+{% block extra_css %}
+<style>
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background-color: #dee2e6;
+    border: 1px solid #dee2e6;
+}
+.calendar-day {
+    background-color: white;
+    min-height: 120px;
+    padding: 8px;
+    position: relative;
+}
+.calendar-day.other-month {
+    background-color: #f8f9fa;
+    color: #6c757d;
+}
+.calendar-event {
+    font-size: 0.75rem;
+    padding: 2px 4px;
+    margin-bottom: 2px;
+    border-radius: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.calendar-header {
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    background-color: var(--bs-primary);
+    color: white;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container section-padding">
+    <div class="text-center mb-5">
+        <h1>Event Calendar</h1>
+        <p class="lead">View all upcoming church events and activities</p>
+    </div>
+
+    <!-- Calendar Navigation -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <a href="?year={{ prev_year }}&month={{ prev_month }}" class="btn btn-outline-primary">
+            <i class="fas fa-chevron-left"></i> Previous
+        </a>
+        <h3>{{ month_name }} {{ year }}</h3>
+        <a href="?year={{ next_year }}&month={{ next_month }}" class="btn btn-outline-primary">
+            Next <i class="fas fa-chevron-right"></i>
+        </a>
+    </div>
+
+    <!-- Calendar Grid -->
+    <div class="calendar-grid mb-4">
+        <!-- Day Headers -->
+        <div class="calendar-header">Sunday</div>
+        <div class="calendar-header">Monday</div>
+        <div class="calendar-header">Tuesday</div>
+        <div class="calendar-header">Wednesday</div>
+        <div class="calendar-header">Thursday</div>
+        <div class="calendar-header">Friday</div>
+        <div class="calendar-header">Saturday</div>
+
+        <!-- Calendar Days -->
+        {% for day in calendar_days %}
+        <div class="calendar-day {% if day.is_other_month %}other-month{% endif %}">
+            <div class="fw-bold">{{ day.day }}</div>
+            {% for event in day.events %}
+                <div class="calendar-event text-white" 
+                     style="background-color: {{ event.category.color|default:'#007bff' }};"
+                     title="{{ event.title }}">
+                    <a href="{{ event.get_absolute_url }}" class="text-white text-decoration-none">
+                        {{ event.title|truncatechars:20 }}
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Event List for Month -->
+    {% if events %}
+    <div class="row">
+        <div class="col-12">
+            <h3>Events This Month</h3>
+            <div class="row">
+                {% for event in events %}
+                <div class="col-md-6 col-lg-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                {% if event.category %}
+                                    <span class="badge" style="background-color: {{ event.category.color }}">
+                                        {{ event.category.name }}
+                                    </span>
+                                {% endif %}
+                                <small class="text-muted">{{ event.start_datetime|date:"M d" }}</small>
+                            </div>
+                            <h6 class="card-title">{{ event.title }}</h6>
+                            <p class="card-text small">{{ event.short_description|truncatewords:10 }}</p>
+                            <p class="small text-muted">
+                                <i class="fas fa-clock"></i> {{ event.start_datetime|date:"g:i A" }}<br>
+                                <i class="fas fa-map-marker-alt"></i> {{ event.location_name }}
+                            </p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="{{ event.get_absolute_url }}" class="btn btn-primary btn-sm">Details</a>
+                            {% if event.requires_rsvp and event.is_registration_open %}
+                                <a href="{% url 'events:register' event.slug %}" class="btn btn-success btn-sm">RSVP</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Quick Actions -->
+    <div class="row mt-5">
+        <div class="col-lg-8 mx-auto">
+            <div class="card bg-light">
+                <div class="card-body text-center">
+                    <h4>Stay Updated</h4>
+                    <p>Subscribe to our newsletter to get notified about new events and church news.</p>
+                    <a href="{% url 'blog:subscribe' %}" class="btn btn-primary">
+                        <i class="fas fa-envelope"></i> Subscribe to Updates
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

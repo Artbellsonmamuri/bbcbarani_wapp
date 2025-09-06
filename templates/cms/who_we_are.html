@@ -1,0 +1,90 @@
+{% extends 'layouts/public_base.html' %}
+{% load static %}
+
+{% block title %}Who We Are - {{ block.super }}{% endblock %}
+
+{% block breadcrumbs %}
+    {% include 'components/breadcrumbs.html' with breadcrumbs=page_breadcrumbs %}
+{% endblock %}
+
+{% block content %}
+<section class="page-content py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="content-section">
+                    <h1>Who We Are</h1>
+
+                    {% if who_we_are_content %}
+                        {{ who_we_are_content.body|safe }}
+                    {% else %}
+                        <p class="lead">
+                            Welcome to Bible Baptist Church Barani, where faith meets community 
+                            and everyone has a place at God's table.
+                        </p>
+
+                        <h3>Our Mission</h3>
+                        <p>
+                            To make disciples of Jesus Christ by sharing the Gospel, 
+                            building authentic community, and serving our neighbors with love.
+                        </p>
+
+                        <h3>Our Vision</h3>
+                        <p>
+                            A thriving church family where people discover their purpose, 
+                            grow in their relationship with God, and impact their world for Christ.
+                        </p>
+
+                        <h3>Our Values</h3>
+                        <ul>
+                            <li><strong>Biblical Truth:</strong> We believe the Bible is God's Word</li>
+                            <li><strong>Authentic Community:</strong> Real relationships matter</li>
+                            <li><strong>Compassionate Service:</strong> Following Christ's example</li>
+                            <li><strong>Passionate Worship:</strong> Giving God our best</li>
+                            <li><strong>Intentional Growth:</strong> Always learning and developing</li>
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="sidebar">
+                    <!-- Quick Info -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5><i class="fas fa-info-circle me-2"></i>Quick Info</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="info-item mb-2">
+                                <strong>Founded:</strong> 1985
+                            </div>
+                            <div class="info-item mb-2">
+                                <strong>Denomination:</strong> Baptist
+                            </div>
+                            <div class="info-item mb-2">
+                                <strong>Members:</strong> 300+
+                            </div>
+                            <div class="info-item">
+                                <strong>Languages:</strong> English
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-envelope me-2"></i>Get in Touch</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Have questions? We'd love to hear from you!</p>
+                            <a href="{% url 'cms:contact' %}" class="btn btn-primary btn-sm">
+                                <i class="fas fa-envelope me-1"></i>Contact Us
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

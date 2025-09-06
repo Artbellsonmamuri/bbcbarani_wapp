@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact Us - Bible Baptist Church Barani{% endblock %}
+
+{% block content %}
+<div class="container section-padding">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="text-center mb-5">Contact Us</h1>
+
+            <!-- Contact Form -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Send us a Message</h4>
+
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                        {{ message }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+
+                            <form method="post">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Name</label>
+                                    <input type="text" class="form-control" id="name" name="name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="subject" class="form-label">Subject</label>
+                                    <input type="text" class="form-control" id="subject" name="subject" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="message" class="form-label">Message</label>
+                                    <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Send Message</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Contact Information</h5>
+                            <p><i class="fas fa-map-marker-alt"></i> 123 Church Street<br>Barani City, State 12345</p>
+                            <p><i class="fas fa-phone"></i> (555) 123-4567</p>
+                            <p><i class="fas fa-envelope"></i> info@bbcbarani.org</p>
+
+                            <h6 class="mt-4">Service Times</h6>
+                            <p>
+                                Sunday Worship: 10:00 AM<br>
+                                Sunday Evening: 6:00 PM<br>
+                                Wednesday: 7:00 PM
+                            </p>
+
+                            <h6 class="mt-4">Follow Us</h6>
+                            <div class="d-flex gap-2">
+                                <a href="#" class="btn btn-outline-primary btn-sm"><i class="fab fa-facebook"></i></a>
+                                <a href="#" class="btn btn-outline-danger btn-sm"><i class="fab fa-youtube"></i></a>
+                                <a href="#" class="btn btn-outline-info btn-sm"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

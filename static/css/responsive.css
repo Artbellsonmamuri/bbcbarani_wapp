@@ -1,0 +1,450 @@
+/* Responsive CSS for Bible Baptist Church Barani */
+
+/* Mobile-First Responsive Design */
+
+/* Extra Small Devices (Portrait Phones) */
+@media (max-width: 575.98px) {
+    /* Typography */
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.75rem; }
+    h3 { font-size: 1.5rem; }
+
+    /* Header */
+    .top-bar {
+        padding: 0.5rem 0;
+    }
+
+    .top-bar .contact-info span {
+        display: block;
+        margin-bottom: 0.25rem;
+    }
+
+    .social-links {
+        margin-top: 0.5rem;
+    }
+
+    .main-header .row {
+        text-align: center;
+    }
+
+    .church-info {
+        margin: 1rem 0;
+    }
+
+    .header-actions {
+        justify-content: center;
+        margin-top: 1rem;
+    }
+
+    /* Navigation */
+    .main-navigation {
+        display: none; /* Hidden by default, shown via Bootstrap collapse */
+    }
+
+    .navbar-collapse {
+        background: white;
+        padding: 1rem;
+        border-radius: var(--border-radius-lg);
+        box-shadow: var(--shadow-lg);
+        margin-top: 1rem;
+    }
+
+    .navbar-nav .nav-link {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid var(--gray-200);
+    }
+
+    .navbar-nav .nav-link:last-child {
+        border-bottom: none;
+    }
+
+    /* Dropdown menus in mobile */
+    .dropdown-menu {
+        border: none;
+        box-shadow: none;
+        background: var(--gray-100);
+        margin: 0.5rem 0;
+    }
+
+    .dropdown-item {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    /* Hero Section */
+    .hero-section {
+        padding: 3rem 0;
+        text-align: center;
+    }
+
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+
+    /* Cards */
+    .card-columns {
+        column-count: 1;
+    }
+
+    .ministry-card,
+    .event-card,
+    .blog-post-card {
+        margin-bottom: 1.5rem;
+    }
+
+    /* Forms */
+    .prayer-form-container {
+        padding: 1rem;
+        margin: 1rem 0;
+    }
+
+    .form-row {
+        flex-direction: column;
+    }
+
+    .form-row .col {
+        margin-bottom: 1rem;
+    }
+
+    /* Footer */
+    .footer-content .col-lg-4,
+    .footer-content .col-lg-2 {
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .footer-bottom .row {
+        text-align: center;
+    }
+
+    .footer-bottom .col-md-6 {
+        margin-bottom: 1rem;
+    }
+
+    /* Tables */
+    .table-responsive {
+        font-size: 0.875rem;
+    }
+
+    /* Modals */
+    .modal-dialog {
+        margin: 1rem;
+    }
+
+    /* Timeline */
+    .timeline::before {
+        left: 15px;
+    }
+
+    .timeline-icon {
+        left: 0;
+        width: 30px;
+        height: 30px;
+        font-size: 0.875rem;
+    }
+
+    .timeline-item {
+        padding-left: 50px;
+    }
+}
+
+/* Small Devices (Landscape Phones) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .hero-title {
+        font-size: 3rem;
+    }
+
+    .card-columns {
+        column-count: 1;
+    }
+
+    .image-gallery {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    .prayer-form-container {
+        padding: 1.5rem;
+    }
+}
+
+/* Medium Devices (Tablets) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .hero-title {
+        font-size: 3.25rem;
+    }
+
+    .card-columns {
+        column-count: 2;
+    }
+
+    .main-navigation .navbar-nav {
+        flex-wrap: wrap;
+    }
+
+    .main-navigation .nav-link {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .image-gallery {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+}
+
+/* Large Devices (Desktops) */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .card-columns {
+        column-count: 3;
+    }
+
+    .image-gallery {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+}
+
+/* Extra Large Devices */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1200px;
+    }
+
+    .hero-title {
+        font-size: 4rem;
+    }
+
+    .card-columns {
+        column-count: 3;
+    }
+}
+
+/* Navigation Responsive Behavior */
+@media (max-width: 991.98px) {
+    .main-navigation {
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .navbar-toggler {
+        border: none;
+        padding: 0.5rem;
+    }
+
+    .navbar-toggler:focus {
+        box-shadow: none;
+    }
+
+    .navbar-collapse {
+        margin-top: 1rem;
+        background: white;
+        border-radius: var(--border-radius-lg);
+        box-shadow: var(--shadow-lg);
+        padding: 1rem;
+    }
+
+    .navbar-nav {
+        text-align: center;
+    }
+
+    .navbar-nav .nav-link {
+        padding: 0.75rem;
+        border-bottom: 1px solid var(--gray-200);
+    }
+
+    .navbar-nav .nav-link:last-child {
+        border-bottom: none;
+    }
+
+    .dropdown-menu {
+        background: var(--gray-100);
+        border: none;
+        box-shadow: none;
+        text-align: center;
+    }
+}
+
+/* Admin Panel Responsive */
+@media (max-width: 767.98px) {
+    .admin-sidebar {
+        position: fixed;
+        top: 0;
+        left: -300px;
+        width: 300px;
+        height: 100vh;
+        z-index: 1050;
+        transition: left 0.3s ease;
+        background: white;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .admin-sidebar.show {
+        left: 0;
+    }
+
+    .admin-main {
+        padding-left: 0;
+    }
+
+    .admin-header .container-fluid {
+        padding: 0.5rem 1rem;
+    }
+
+    .admin-header .h4 {
+        font-size: 1.1rem;
+    }
+
+    .admin-header .dropdown-menu {
+        right: 0;
+        left: auto;
+    }
+}
+
+/* Print Responsive */
+@media print {
+    /* Hide all interactive elements */
+    .site-header,
+    .main-navigation,
+    .site-footer,
+    .btn,
+    .dropdown,
+    .pagination,
+    #back-to-top,
+    .alert-dismissible .btn-close {
+        display: none !important;
+    }
+
+    /* Adjust layout for print */
+    .container {
+        width: 100% !important;
+        max-width: none !important;
+        padding: 0 !important;
+    }
+
+    .row {
+        margin: 0 !important;
+    }
+
+    .col,
+    .col-1, .col-2, .col-3, .col-4, .col-5, .col-6,
+    .col-7, .col-8, .col-9, .col-10, .col-11, .col-12,
+    .col-sm, .col-md, .col-lg, .col-xl {
+        padding: 0 !important;
+    }
+
+    /* Typography for print */
+    body {
+        font-size: 12pt;
+        line-height: 1.4;
+        color: #000 !important;
+        background: white !important;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        color: #000 !important;
+        page-break-after: avoid;
+    }
+
+    p, li {
+        orphans: 3;
+        widows: 3;
+    }
+
+    /* Card layouts for print */
+    .card {
+        border: 1px solid #ddd !important;
+        box-shadow: none !important;
+        page-break-inside: avoid;
+        margin-bottom: 1rem;
+    }
+
+    .card-header {
+        background: #f5f5f5 !important;
+        color: #000 !important;
+    }
+
+    /* Images */
+    img {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+
+    /* Links */
+    a {
+        color: #000 !important;
+        text-decoration: none !important;
+    }
+
+    /* Show URLs for external links */
+    a[href^="http"]:after {
+        content: " (" attr(href) ")";
+        font-size: 10pt;
+        color: #666;
+    }
+}
+
+/* Accessibility Responsive */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+    :root {
+        --primary-color: #0000FF;
+        --secondary-color: #FF0000;
+        --dark-color: #000000;
+        --light-color: #FFFFFF;
+    }
+
+    .btn-outline-primary,
+    .btn-outline-secondary {
+        border-width: 2px;
+    }
+
+    .card {
+        border: 2px solid var(--dark-color);
+    }
+}
+
+/* Dark Mode Preference */
+@media (prefers-color-scheme: dark) {
+    /* This would be implemented if dark mode is desired */
+    /* Currently keeping light theme as default for church website */
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+    /* Larger touch targets */
+    .btn {
+        min-height: 44px;
+        min-width: 44px;
+        padding: 0.75rem 1.5rem;
+    }
+
+    .nav-link {
+        min-height: 44px;
+        padding: 0.75rem 1rem;
+    }
+
+    .form-control,
+    .form-select {
+        min-height: 44px;
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+
+    /* Remove hover effects on touch devices */
+    .card:hover,
+    .btn:hover,
+    .nav-link:hover {
+        transform: none;
+        box-shadow: var(--shadow);
+    }
+}

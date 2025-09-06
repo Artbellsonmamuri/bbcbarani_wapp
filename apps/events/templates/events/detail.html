@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ event.title }} - Bible Baptist Church Barani{% endblock %}
+{% block meta_description %}{{ event.meta_description|default:event.short_description }}{% endblock %}
+
+{% block content %}
+<div class="container section-padding">
+    <!-- Event Header -->
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto text-center">
+            {% if event.category %}
+                <span class="badge mb-3" style="background-color: {{ event.category.color }}; font-size: 1rem;">
+                    {{ event.category.name }}
+                </span>
+            {% endif %}
+            <h1 class="display-4">{{ event.title }}</h1>
+            <p class="lead">{{ event.short_description }}</p>
+
+            <!-- Key Event Info -->
+            <div class="row text-center mt-4">
+                <div class="col-md-3">
+                    <div class="event-info-item">
+                        <i class="fas fa-calendar fa-2x text-primary mb-2"></i>
+                        <h6>Date</h6>
+                        <p>{{ event.start_datetime|date:"M d, Y" }}</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="event-info-item">
+                        <i class="fas fa-clock fa-2x text-primary mb-2"></i>
+                        <h6>Time</h6>
+                        <p>{{ event.start_datetime|date:"g:i A" }}</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="event-info-item">
+                        <i class="fas fa-map-marker-alt fa-2x text-primary mb-2"></i>
+                        <h6>Location</h6>
+                        <p>{{ event.location_name }}</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="event-info-item">
+                        {% if event.registration_fee > 0 %}
+                            <i class="fas fa-dollar-sign fa-2x text-primary mb-2"></i>
+                            <h6>Cost</h6>
+                            <p>${{ event.registration_fee }}</p>
+                        {% else %}
+                            <i class="fas fa-gift fa-2x text-primary mb-2"></i>
+                            <h6>Cost</h6>
+                            <p>Free</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Image -->
+    {% if event.featured_image %}
+    <div class="row mb-5">
+        <div class="col-lg-10 mx-auto">
+            <img src="{{ event.featured_image.file.url }}" class="img-fluid rounded" 
+                 alt="{{ event.featured_image.alt_text }}" style="width: 100%; height: 400px; object-fit: cover;">
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Event Content -->
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Description -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3>About This Event</h3>
+                    {{ event.description|safe }}
+                </div>
+            </div>
+
+            <!-- Location Details -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5>Event Details</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><i class="fas fa-calendar"></i> <strong>Date:</strong> {{ event.start_datetime|date:"F d, Y" }}</p>
+                            <p><i class="fas fa-clock"></i> <strong>Time:</strong> {{ event.start_datetime|date:"g:i A" }} - {{ event.end_datetime|date:"g:i A" }}</p>
+                            {% if event.is_virtual %}
+                                <p><i class="fas fa-video"></i> <strong>Format:</strong> Virtual Event</p>
+                                {% if event.virtual_link %}
+                                    <p><i class="fas fa-link"></i> <strong>Join Link:</strong> 
+                                        <a href="{{ event.virtual_link }}" target="_blank" class="btn btn-sm btn-primary">Join Event</a>
+                                    </p>
+                                {% endif %}
+                            {% else %}
+                                <p><i class="fas fa-map-marker-alt"></i> <strong>Location:</strong> {{ event.location_name }}</p>
+                                {% if event.address %}
+                                    <p><i class="fas fa-map"></i> <strong>Address:</strong> {{ event.address|linebreaks }}</p>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            {% if event.contact_person or event.contact_email %}
+                                <h6>Contact Information</h6>
+                                {% if event.contact_person %}
+                                    <p><i class="fas fa-user"></i> {{ event.contact_person.get_full_name }}</p>
+                                {% endif %}
+                                {% if event.contact_email %}
+                                    <p><i class="fas fa-envelope"></i> {{ event.contact_email }}</p>
+                                {% endif %}
+                                {% if event.contact_phone %}
+                                    <p><i class="fas fa-phone"></i> {{ event.contact_phone }}</p>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gallery -->
+            {% if event.gallery_images.exists %}
+            <div class="card">
+                <div class="card-body">
+                    <h5>Event Gallery</h5>
+                    <div class="row">
+                        {% for image in event.gallery_images.all %}
+                        <div class="col-md-4 mb-3">
+                            <img src="{{ image.file.url }}" class="img-fluid rounded" 
+                                 alt="{{ image.alt_text }}" style="height: 150px; width: 100%; object-fit: cover;">
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Registration Card -->
+            {% if event.requires_rsvp %}
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5>Event Registration</h5>
+
+                    {% if user_registration %}
+                        <!-- Already Registered -->
+                        <div class="text-center">
+                            <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                            <h6>You're Registered!</h6>
+                            <p>Registration Status: <span class="badge bg-success">{{ user_registration.get_status_display }}</span></p>
+                            {% if user_registration.number_of_attendees > 1 %}
+                                <p>Attendees: {{ user_registration.number_of_attendees }}</p>
+                            {% endif %}
+                            <a href="{% url 'events:cancel_registration' event.slug %}" 
+                               class="btn btn-outline-danger btn-sm">Cancel Registration</a>
+                        </div>
+                    {% elif event.is_registration_open %}
+                        <!-- Registration Open -->
+                        <div class="text-center">
+                            <p>
+                                {% if event.spots_available %}
+                                    <span class="text-success">{{ event.spots_available }} spots available</span>
+                                {% elif event.spots_available == 0 %}
+                                    <span class="text-warning">Event is full</span>
+                                {% else %}
+                                    <span class="text-info">Registration open</span>
+                                {% endif %}
+                            </p>
+
+                            {% if event.registration_deadline %}
+                                <p class="small text-muted">
+                                    Registration deadline: {{ event.registration_deadline|date:"M d, Y g:i A" }}
+                                </p>
+                            {% endif %}
+
+                            {% if event.spots_available != 0 %}
+                                {% if user.is_authenticated %}
+                                    <a href="{% url 'events:register' event.slug %}" class="btn btn-success">Register Now</a>
+                                {% else %}
+                                    <p>Please <a href="{% url 'accounts:login' %}">login</a> to register for this event.</p>
+                                    {% if event.allow_guest_registration %}
+                                        <a href="{% url 'events:register' event.slug %}" class="btn btn-outline-success">Register as Guest</a>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <!-- Registration Closed -->
+                        <div class="text-center">
+                            <i class="fas fa-times-circle fa-3x text-danger mb-3"></i>
+                            <h6>Registration Closed</h6>
+                            <p class="text-muted">Registration for this event is no longer available.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Event Status -->
+            {% if event.is_ongoing %}
+            <div class="alert alert-info">
+                <i class="fas fa-play-circle"></i> This event is currently ongoing!
+            </div>
+            {% elif event.is_past %}
+            <div class="alert alert-secondary">
+                <i class="fas fa-check-circle"></i> This event has ended.
+            </div>
+            {% endif %}
+
+            <!-- Organizer Info -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5>Organized By</h5>
+                    <div class="d-flex align-items-center">
+                        {% if event.organizer.avatar %}
+                            <img src="{{ event.organizer.avatar.url }}" class="rounded-circle me-3" 
+                                 style="width: 50px; height: 50px; object-fit: cover;">
+                        {% endif %}
+                        <div>
+                            <strong>{{ event.organizer.get_full_name }}</strong><br>
+                            {% if event.organizer.profile.title %}
+                                <small class="text-muted">{{ event.organizer.profile.title }}</small>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {% if event.co_organizers.exists %}
+                        <div class="mt-3">
+                            <h6>Co-organizers:</h6>
+                            {% for co_organizer in event.co_organizers.all %}
+                                <div class="d-flex align-items-center mb-2">
+                                    {% if co_organizer.avatar %}
+                                        <img src="{{ co_organizer.avatar.url }}" class="rounded-circle me-2" 
+                                             style="width: 30px; height: 30px; object-fit: cover;">
+                                    {% endif %}
+                                    <span>{{ co_organizer.get_full_name }}</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Related Events -->
+            {% if related_events %}
+            <div class="card">
+                <div class="card-body">
+                    <h5>Related Events</h5>
+                    {% for related in related_events %}
+                    <div class="d-flex mb-3">
+                        {% if related.featured_image %}
+                            <img src="{{ related.featured_image.file.url }}" class="me-3" 
+                                 style="width: 60px; height: 60px; object-fit: cover;">
+                        {% endif %}
+                        <div>
+                            <h6 class="mb-1">
+                                <a href="{{ related.get_absolute_url }}" class="text-decoration-none">
+                                    {{ related.title|truncatewords:8 }}
+                                </a>
+                            </h6>
+                            <small class="text-muted">{{ related.start_datetime|date:"M d, Y" }}</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

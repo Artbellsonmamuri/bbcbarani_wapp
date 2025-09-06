@@ -1,0 +1,122 @@
+{% extends 'admin/base_site.html' %}
+
+{% block title %}Events Dashboard - Bible Baptist Church CMS{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1>Events Dashboard</h1>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <h5>{{ total_events }}</h5>
+                    <p>Total Events</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <h5>{{ upcoming_events }}</h5>
+                    <p>Upcoming</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <h5>{{ ongoing_events }}</h5>
+                    <p>Ongoing</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-warning">
+                <div class="card-body">
+                    <h5>{{ total_registrations }}</h5>
+                    <p>Total Registrations</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Recent Events</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Event</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Registrations</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for event in recent_events %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ event.get_absolute_url }}">{{ event.title|truncatechars:40 }}</a>
+                                        {% if event.is_featured %}<span class="badge bg-warning">Featured</span>{% endif %}
+                                    </td>
+                                    <td>{{ event.start_datetime|date:"M d, Y g:i A" }}</td>
+                                    <td>
+                                        <span class="badge bg-{% if event.status == 'published' %}success{% elif event.status == 'cancelled' %}danger{% else %}secondary{% endif %}">
+                                            {{ event.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {% if event.requires_rsvp %}
+                                            {{ event.registration_count }}/{{ event.max_attendees|default:"∞" }}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'admin:events_event_change' event.id %}" class="btn btn-sm btn-primary">Edit</a>
+                                        {% if event.requires_rsvp %}
+                                            <a href="{% url 'events:admin_checkin' event.id %}" class="btn btn-sm btn-success">Check-in</a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Recent Registrations</h5>
+                </div>
+                <div class="card-body">
+                    {% for registration in recent_registrations %}
+                    <div class="border-bottom mb-3 pb-2">
+                        <h6>{{ registration.get_registrant_name }}</h6>
+                        <p class="small">{{ registration.event.title|truncatechars:30 }}</p>
+                        <small class="text-muted">
+                            {{ registration.registered_at|date:"M d, Y g:i A" }}
+                        </small>
+                        <span class="badge bg-{% if registration.status == 'confirmed' %}success{% elif registration.status == 'pending' %}warning{% else %}danger{% endif %} float-end">
+                            {{ registration.get_status_display }}
+                        </span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

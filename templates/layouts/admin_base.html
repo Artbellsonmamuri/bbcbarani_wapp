@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ block.super }} - Admin Panel{% endblock %}
+
+{% block body_class %}admin-panel{% endblock %}
+
+{% block extra_css %}
+    <link href="{% static 'css/admin-custom.css' %}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block header %}
+    <!-- Admin Header -->
+    <header class="admin-header bg-dark text-white">
+        <div class="container-fluid">
+            <div class="row align-items-center py-3">
+                <div class="col-md-6">
+                    <h1 class="h4 mb-0">
+                        <i class="fas fa-cogs me-2"></i>
+                        Admin Panel - Bible Baptist Church
+                    </h1>
+                </div>
+                <div class="col-md-6 text-end">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user me-2"></i>
+                            {{ user.get_full_name|default:user.username }}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{% url 'accounts:profile' %}">
+                                <i class="fas fa-user me-2"></i>Profile
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'notifications:preferences' %}">
+                                <i class="fas fa-bell me-2"></i>Notifications
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/">
+                                <i class="fas fa-home me-2"></i>View Site
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'accounts:logout' %}">
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                            </a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Notification Bell -->
+                    <button class="btn btn-outline-light ms-2 position-relative" id="notification-bell">
+                        <i class="fas fa-bell"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="notification-count" style="display: none;">
+                            0
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+{% block navigation %}
+    <nav class="admin-sidebar bg-light border-end">
+        <div class="sidebar-content">
+            <!-- Dashboard -->
+            <div class="nav-section">
+                <h6 class="nav-header">Dashboard</h6>
+                <a href="{% url 'admin:index' %}" class="nav-link">
+                    <i class="fas fa-tachometer-alt me-2"></i>Overview
+                </a>
+            </div>
+
+            <!-- Content Management -->
+            <div class="nav-section">
+                <h6 class="nav-header">Content</h6>
+                <a href="{% url 'cms:admin_dashboard' %}" class="nav-link">
+                    <i class="fas fa-file-alt me-2"></i>Pages & Sections
+                </a>
+                <a href="{% url 'blog:admin_dashboard' %}" class="nav-link">
+                    <i class="fas fa-blog me-2"></i>Blog Posts
+                </a>
+                <a href="{% url 'events:admin_dashboard' %}" class="nav-link">
+                    <i class="fas fa-calendar me-2"></i>Events
+                </a>
+                <a href="{% url 'ministries:admin_dashboard' %}" class="nav-link">
+                    <i class="fas fa-hands-helping me-2"></i>Ministries
+                </a>
+            </div>
+
+            <!-- User Management -->
+            <div class="nav-section">
+                <h6 class="nav-header">Users</h6>
+                <a href="{% url 'accounts:admin_dashboard' %}" class="nav-link">
+                    <i class="fas fa-users me-2"></i>Members
+                </a>
+                <a href="{% url 'prayer:admin_dashboard' %}" class="nav-link">
+                    <i class="fas fa-pray me-2"></i>Prayer Requests
+                </a>
+            </div>
+
+            <!-- Media & Design -->
+            <div class="nav-section">
+                <h6 class="nav-header">Media & Design</h6>
+                <a href="{% url 'media_manager:admin_dashboard' %}" class="nav-link">
+                    <i class="fas fa-images me-2"></i>Media Library
+                </a>
+                <a href="{% url 'themes:admin_dashboard' %}" class="nav-link">
+                    <i class="fas fa-palette me-2"></i>Themes
+                </a>
+            </div>
+
+            <!-- Communication -->
+            <div class="nav-section">
+                <h6 class="nav-header">Communication</h6>
+                <a href="{% url 'notifications:admin_dashboard' %}" class="nav-link">
+                    <i class="fas fa-bell me-2"></i>Notifications
+                </a>
+                <a href="{% url 'blog:comments_admin' %}" class="nav-link">
+                    <i class="fas fa-comments me-2"></i>Comments
+                </a>
+            </div>
+
+            <!-- Analytics -->
+            <div class="nav-section">
+                <h6 class="nav-header">Analytics</h6>
+                <a href="{% url 'analytics:dashboard' %}" class="nav-link">
+                    <i class="fas fa-chart-line me-2"></i>Site Analytics
+                </a>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block main_class %}admin-main{% endblock %}
+
+{% block extra_js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="{% static 'js/admin.js' %}"></script>
+{% endblock %}

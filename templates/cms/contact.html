@@ -1,0 +1,107 @@
+{% extends 'layouts/public_base.html' %}
+{% load static %}
+
+{% block title %}Contact Us - {{ block.super }}{% endblock %}
+
+{% block content %}
+<section class="contact-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="contact-form-section">
+                    <h1>Get in Touch</h1>
+                    <p class="lead">We'd love to hear from you! Send us a message and we'll get back to you soon.</p>
+
+                    <form method="post" class="contact-form">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label">Full Name *</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Email Address *</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" name="phone">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="subject" class="form-label">Subject</label>
+                                <select class="form-select" id="subject" name="subject">
+                                    <option value="">Select a topic...</option>
+                                    <option value="general">General Inquiry</option>
+                                    <option value="pastor">Pastoral Care</option>
+                                    <option value="ministry">Ministry Information</option>
+                                    <option value="prayer">Prayer Request</option>
+                                    <option value="event">Event Information</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Message *</label>
+                            <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane me-2"></i>Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="contact-info">
+                    <h3>Contact Information</h3>
+
+                    <div class="contact-item mb-4">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt text-primary"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h5>Address</h5>
+                            <p>123 Church Street<br>Barani, State 12345</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item mb-4">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone text-primary"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h5>Phone</h5>
+                            <p><a href="tel:+1234567890">+123 456 7890</a></p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item mb-4">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope text-primary"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h5>Email</h5>
+                            <p><a href="mailto:info@bbcbarani.org">info@bbcbarani.org</a></p>
+                        </div>
+                    </div>
+
+                    <div class="service-times-section">
+                        <h5>Service Times</h5>
+                        <div class="service-time">
+                            <strong>Sunday Morning:</strong> 10:00 AM
+                        </div>
+                        <div class="service-time">
+                            <strong>Sunday Evening:</strong> 6:00 PM  
+                        </div>
+                        <div class="service-time">
+                            <strong>Wednesday Prayer:</strong> 7:00 PM
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

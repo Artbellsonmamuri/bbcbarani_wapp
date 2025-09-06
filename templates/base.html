@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="{% if LANGUAGE_CODE %}{{ LANGUAGE_CODE }}{% else %}en{% endif %}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- SEO Meta Tags -->
+    <title>{% block title %}Bible Baptist Church Barani{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}Welcome to Bible Baptist Church Barani - A community of faith, love, and service.{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}church, baptist, barani, bible, faith, community, worship{% endblock %}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:title" content="{% block og_title %}{{ block.super }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ block.super }}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{% load static %}{% static 'images/logo.png' %}{% endblock %}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ request.build_absolute_uri }}">
+    <meta property="twitter:title" content="{{ block.super }}">
+    <meta property="twitter:description" content="{{ block.super }}">
+    <meta property="twitter:image" content="{{ block.super }}">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% load static %}{% static 'images/favicon.ico' %}">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    {% load static %}
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    {% if active_theme and active_theme.css_settings %}
+        <style>
+            {{ active_theme.css_settings|safe }}
+        </style>
+    {% endif %}
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+    <!-- Cookie Consent Banner -->
+    {% include 'partials/cookie_consent.html' %}
+
+    <!-- Header -->
+    {% include 'partials/header.html' %}
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    {% include 'partials/footer.html' %}
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="{% static 'js/main.js' %}"></script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

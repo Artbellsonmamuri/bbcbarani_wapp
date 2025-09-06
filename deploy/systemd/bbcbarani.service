@@ -1,0 +1,28 @@
+[Unit]
+Description=Bible Baptist Church Barani CMS Gunicorn daemon
+Requires=bbcbarani.socket
+After=network.target
+
+[Service]
+Type=notify
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/bbcbarani
+ExecStart=/var/www/bbcbarani/venv/bin/gunicorn \
+    --access-logfile - \
+    --workers 3 \
+    --bind unix:/run/gunicorn/bbcbarani.sock \
+    --timeout 60 \
+    --keep-alive 2 \
+    --max-requests 1000 \
+    --max-requests-jitter 100 \
+    bbcbarani.wsgi:application
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=5
+PrivateTmp=true
+Environment="DJANGO_SETTINGS_MODULE=bbcbarani.settings.prod"
+EnvironmentFile=/var/www/bbcbarani/.env
+
+[Install]
+WantedBy=multi-user.target

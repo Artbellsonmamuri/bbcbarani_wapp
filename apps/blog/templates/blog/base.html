@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+<style>
+.blog-card {
+    transition: transform 0.2s;
+}
+.blog-card:hover {
+    transform: translateY(-5px);
+}
+.comment-thread {
+    border-left: 3px solid var(--bs-primary);
+    padding-left: 1rem;
+    margin-left: 1rem;
+}
+</style>
+{% endblock %}

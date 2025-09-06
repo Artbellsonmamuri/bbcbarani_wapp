@@ -1,0 +1,52 @@
+{% load static %}
+<header class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <img src="{% static 'images/logo.png' %}" alt="BBC Barani" height="40">
+            Bible Baptist Church Barani
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'ministries:list' %}">Ministries</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'blog:list' %}">News</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'events:list' %}">Events</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cms:contact' %}">Contact</a>
+                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            {{ user.get_full_name|default:user.username }}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'accounts:profile' %}">Profile</a></li>
+                            {% if user.is_admin %}
+                                <li><a class="dropdown-item" href="/admin/">CMS Admin</a></li>
+                            {% endif %}
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'accounts:logout' %}">Logout</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'accounts:login' %}">Login</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</header>

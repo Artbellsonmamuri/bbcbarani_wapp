@@ -1,0 +1,299 @@
+{% extends 'admin/base_site.html' %}
+{% load static %}
+
+{% block title %}Theme Editor - Bible Baptist Church CMS{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'admin/css/themes.css' %}">
+<style>
+.theme-preview {
+    border: 1px solid #ddd;
+    height: 400px;
+    overflow: auto;
+}
+.color-input {
+    width: 50px;
+    height: 40px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.theme-card {
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.theme-card:hover {
+    transform: scale(1.02);
+}
+.theme-card.active {
+    border: 2px solid #007bff;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1>Visual Theme Editor</h1>
+
+    <div class="row">
+        <!-- Theme Selection -->
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Themes</h5>
+                    <a href="{% url 'themes:create' %}" class="btn btn-primary btn-sm">Create New</a>
+                </div>
+                <div class="card-body">
+                    {% for theme in all_themes %}
+                    <div class="theme-card card mb-2 {% if theme.is_active %}active{% endif %}" 
+                         data-theme-id="{{ theme.id }}">
+                        <div class="card-body p-3">
+                            <h6>{{ theme.name }}</h6>
+                            {% if theme.preview_image %}
+                                <img src="{{ theme.preview_image.url }}" class="img-fluid mb-2" 
+                                     style="height: 60px; object-fit: cover;">
+                            {% endif %}
+                            <div class="d-flex justify-content-between">
+                                <button class="btn btn-sm btn-outline-primary edit-theme" 
+                                        data-theme-id="{{ theme.id }}">Edit</button>
+                                {% if not theme.is_active %}
+                                    <button class="btn btn-sm btn-success activate-theme" 
+                                            data-theme-id="{{ theme.id }}">Activate</button>
+                                {% else %}
+                                    <span class="badge bg-success">Active</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Theme Editor -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Theme Settings</h5>
+                </div>
+                <div class="card-body">
+                    <form id="theme-settings-form">
+                        <div class="row">
+                            <!-- Colors -->
+                            <div class="col-12 mb-4">
+                                <h6>Colors</h6>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label>Primary Color</label>
+                                        <input type="color" class="color-input" name="primary_color" value="#007bff">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label>Secondary Color</label>
+                                        <input type="color" class="color-input" name="secondary_color" value="#6c757d">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label>Background Color</label>
+                                        <input type="color" class="color-input" name="background_color" value="#ffffff">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label>Text Color</label>
+                                        <input type="color" class="color-input" name="text_color" value="#333333">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Typography -->
+                            <div class="col-12 mb-4">
+                                <h6>Typography</h6>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label>Heading Font</label>
+                                        <select name="heading_font" class="form-select">
+                                            {% for font in font_families %}
+                                                <option value="{{ font.font_family }}">{{ font.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label>Body Font</label>
+                                        <select name="body_font" class="form-select">
+                                            {% for font in font_families %}
+                                                <option value="{{ font.font_family }}">{{ font.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Layout -->
+                            <div class="col-12 mb-4">
+                                <h6>Layout</h6>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label>Container Width</label>
+                                        <select name="container_width" class="form-select">
+                                            <option value="1200px">Standard (1200px)</option>
+                                            <option value="1400px">Wide (1400px)</option>
+                                            <option value="100%">Full Width</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label>Border Radius</label>
+                                        <select name="border_radius" class="form-select">
+                                            <option value="0px">Square</option>
+                                            <option value="4px">Slightly Rounded</option>
+                                            <option value="8px">Rounded</option>
+                                            <option value="16px">Very Rounded</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Custom CSS -->
+                        <div class="mb-3">
+                            <label>Custom CSS</label>
+                            <textarea name="custom_css" class="form-control" rows="10" 
+                                      placeholder="/* Add custom CSS here */"></textarea>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-primary" id="save-theme">Save Changes</button>
+                            <button type="button" class="btn btn-outline-secondary" id="preview-theme">Preview</button>
+                            <button type="button" class="btn btn-success" id="activate-theme">Activate Theme</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Preview -->
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Live Preview</h5>
+                </div>
+                <div class="card-body p-0">
+                    <iframe id="theme-preview" class="theme-preview w-100" 
+                            src="{% url 'themes:preview' active_theme.id %}"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let currentThemeId = {{ active_theme.id|default:0 }};
+
+    // Theme selection
+    document.querySelectorAll('.theme-card').forEach(card => {
+        card.addEventListener('click', function() {
+            currentThemeId = this.getAttribute('data-theme-id');
+            loadThemeSettings(currentThemeId);
+
+            // Update active state
+            document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+    // Color input changes
+    document.querySelectorAll('.color-input, select, textarea').forEach(input => {
+        input.addEventListener('change', updatePreview);
+    });
+
+    // Save theme
+    document.getElementById('save-theme').addEventListener('click', function() {
+        saveThemeSettings();
+    });
+
+    // Activate theme
+    document.getElementById('activate-theme').addEventListener('click', function() {
+        activateTheme(currentThemeId);
+    });
+
+    function loadThemeSettings(themeId) {
+        // Load theme settings via AJAX
+        fetch(`/api/themes/${themeId}/`)
+            .then(response => response.json())
+            .then(data => {
+                // Populate form with theme settings
+                const settings = data.css_settings || {};
+                Object.keys(settings).forEach(key => {
+                    const input = document.querySelector(`[name="${key}"]`);
+                    if (input) {
+                        input.value = settings[key];
+                    }
+                });
+
+                document.querySelector('[name="custom_css"]').value = data.custom_css || '';
+                updatePreview();
+            });
+    }
+
+    function updatePreview() {
+        const formData = new FormData(document.getElementById('theme-settings-form'));
+        const settings = {};
+
+        for (let [key, value] of formData.entries()) {
+            if (key !== 'custom_css') {
+                settings[key] = value;
+            }
+        }
+
+        const previewUrl = `/themes/${currentThemeId}/preview/?settings=${encodeURIComponent(JSON.stringify(settings))}`;
+        document.getElementById('theme-preview').src = previewUrl;
+    }
+
+    function saveThemeSettings() {
+        const formData = new FormData(document.getElementById('theme-settings-form'));
+        const settings = {};
+
+        for (let [key, value] of formData.entries()) {
+            if (key !== 'custom_css') {
+                settings[key] = value;
+            }
+        }
+
+        fetch('{% url "themes:save_settings" %}', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            },
+            body: JSON.stringify({
+                theme_id: currentThemeId,
+                css_settings: settings,
+                custom_css: formData.get('custom_css')
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Theme saved successfully!');
+            } else {
+                alert('Error saving theme: ' + data.message);
+            }
+        });
+    }
+
+    function activateTheme(themeId) {
+        fetch(`{% url "themes:activate" 0 %}`.replace('0', themeId), {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Theme activated successfully!');
+                location.reload();
+            } else {
+                alert('Error activating theme');
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

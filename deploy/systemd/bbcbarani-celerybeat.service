@@ -1,0 +1,22 @@
+[Unit]
+Description=Bible Baptist Church Barani CMS Celery Beat Scheduler
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/bbcbarani
+ExecStart=/var/www/bbcbarani/venv/bin/celery beat \
+    -A bbcbarani \
+    --scheduler django_celery_beat.schedulers:DatabaseScheduler \
+    --pidfile=/var/run/celery/bbcbarani-beat.pid \
+    --logfile=/var/log/celery/bbcbarani-beat.log \
+    --loglevel=INFO
+Environment="DJANGO_SETTINGS_MODULE=bbcbarani.settings.prod"
+EnvironmentFile=/var/www/bbcbarani/.env
+Restart=on-failure
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target

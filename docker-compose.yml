@@ -1,0 +1,122 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=bbcbarani.settings.prod
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./media:/app/media
+      - ./logs:/app/logs
+    networks:
+      - bbcbarani-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    env_file:
+      - .env
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./deploy/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3306:3306"
+    networks:
+      - bbcbarani-network
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - bbcbarani-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/nginx/bbcbarani.conf:/etc/nginx/conf.d/default.conf
+      - ./static:/var/www/bbcbarani/static:ro
+      - ./media:/var/www/bbcbarani/media:ro
+      - ./deploy/nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - web
+    networks:
+      - bbcbarani-network
+
+  celery:
+    build: .
+    restart: unless-stopped
+    command: celery -A bbcbarani worker -l info --concurrency=2
+    environment:
+      - DJANGO_SETTINGS_MODULE=bbcbarani.settings.prod
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./media:/app/media
+      - ./logs:/app/logs
+    networks:
+      - bbcbarani-network
+
+  celerybeat:
+    build: .
+    restart: unless-stopped
+    command: celery -A bbcbarani beat -l info
+    environment:
+      - DJANGO_SETTINGS_MODULE=bbcbarani.settings.prod
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./media:/app/media
+      - ./logs:/app/logs
+    networks:
+      - bbcbarani-network
+
+volumes:
+  mysql_data:
+  redis_data:
+
+networks:
+  bbcbarani-network:
+    driver: bridge

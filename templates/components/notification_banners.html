@@ -1,0 +1,66 @@
+<!-- Notification Banners Component -->
+{% load static %}
+
+<div id="notification-banners">
+    <!-- Banners will be dynamically loaded here -->
+</div>
+
+<script>
+// Load and display active notification banners
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/api/notifications/banners/')
+        .then(response => response.json())
+        .then(data => {
+            const bannersContainer = document.getElementById('notification-banners');
+
+            if (data.banners && data.banners.length > 0) {
+                data.banners.forEach(banner => {
+                    const bannerElement = createBannerElement(banner);
+                    bannersContainer.appendChild(bannerElement);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error loading notification banners:', error);
+        });
+});
+
+function createBannerElement(banner) {
+    const div = document.createElement('div');
+    const alertClass = `alert-${banner.banner_type}`;
+    const dismissible = banner.is_dismissible ? 'alert-dismissible' : '';
+
+    div.className = `alert ${alertClass} ${dismissible} mb-0 rounded-0`;
+    div.setAttribute('role', 'alert');
+
+    let html = `
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col">
+                    <strong>${banner.title}</strong>
+                    ${banner.message ? ` - ${banner.message}` : ''}
+                </div>
+    `;
+
+    if (banner.action_url && banner.action_text) {
+        const target = banner.action_opens_new_tab ? 'target="_blank"' : '';
+        html += `
+                <div class="col-auto">
+                    <a href="${banner.action_url}" class="btn btn-sm btn-outline-${banner.banner_type}" ${target}>
+                        ${banner.action_text}
+                    </a>
+                </div>
+        `;
+    }
+
+    html += '</div></div>';
+
+    if (banner.is_dismissible) {
+        html += '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>';
+    }
+
+    div.innerHTML = html;
+
+    return div;
+}
+</script>
