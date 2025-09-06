@@ -1,5 +1,5 @@
 """
-Theme and CSS management API URL configuration
+Theme and CSS management API URL configuration  
 """
 from django.urls import path
 from . import views

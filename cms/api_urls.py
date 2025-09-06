@@ -1,5 +1,5 @@
 """
-Core content management API URL configuration
+Core content management API URL configuration  
 """
 from django.urls import path
 from . import views

@@ -1,5 +1,5 @@
 """
-Media library management API URL configuration
+Media library management API URL configuration  
 """
 from django.urls import path
 from . import views

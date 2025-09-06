@@ -1,5 +1,5 @@
 """
-Real-time notifications API URL configuration
+Real-time notifications API URL configuration  
 """
 from django.urls import path
 from . import views

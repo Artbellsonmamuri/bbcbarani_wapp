@@ -11,4 +11,4 @@ if env == 'development':
 else:
     from .prod import *
 
-print(f"🚀 {env.title()} settings loaded")
+print(f"🚀 {env.title()} settings loaded (FIXED)")

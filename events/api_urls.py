@@ -1,5 +1,5 @@
 """
-Event calendar and RSVP API URL configuration
+Event calendar and RSVP API URL configuration  
 """
 from django.urls import path
 from . import views

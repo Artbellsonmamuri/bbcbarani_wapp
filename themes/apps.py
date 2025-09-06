@@ -7,10 +7,3 @@ class ThemesConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'themes'
     verbose_name = 'Theme And Css Management'
-
-    def ready(self):
-        """Initialize app when Django starts"""
-        try:
-            import themes.signals
-        except ImportError:
-            pass

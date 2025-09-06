@@ -7,10 +7,3 @@ class CmsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'cms'
     verbose_name = 'Core Content Management'
-
-    def ready(self):
-        """Initialize app when Django starts"""
-        try:
-            import cms.signals
-        except ImportError:
-            pass

@@ -1,5 +1,5 @@
 """
-Blog system with comments API URL configuration
+Blog system with comments API URL configuration  
 """
 from django.urls import path
 from . import views

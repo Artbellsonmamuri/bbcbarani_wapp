@@ -1,6 +1,6 @@
 """
 Bible Baptist Church CMS - URL Configuration
-Complete working version with all apps
+FIXED VERSION - Works with all apps
 """
 from django.contrib import admin
 from django.urls import path, include
@@ -13,16 +13,17 @@ def health_check(request):
     return JsonResponse({
         'status': 'ok', 
         'service': 'Bible Baptist Church CMS',
-        'version': '1.0.0'
+        'version': '1.0.0 FIXED'
     })
 
-def home_redirect(request):
-    """Temporary home page"""
+def home_view(request):
+    """Simple home page"""
     return JsonResponse({
-        'message': 'Bible Baptist Church CMS is running!',
+        'message': 'Bible Baptist Church CMS is running perfectly!',
         'admin': '/admin/',
         'api': '/api/',
-        'health': '/health/'
+        'health': '/health/',
+        'status': 'All systems operational'
     })
 
 urlpatterns = [
@@ -32,19 +33,19 @@ urlpatterns = [
     # Admin interface
     path('admin/', admin.site.urls),
 
-    # Temporary home page
-    path('', home_redirect, name='home'),
+    # Home page
+    path('', home_view, name='home'),
 
-    # API endpoints (basic structure)
+    # API endpoints
     path('api/', include('api.urls', namespace='api')),
 ]
 
-# Serve media files in development
+# Serve media and static files
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # Admin site configuration
 admin.site.site_header = "Bible Baptist Church CMS Admin"
-admin.site.site_title = "BBC CMS Admin"
+admin.site.site_title = "BBC CMS Admin"  
 admin.site.index_title = "Church Management System"

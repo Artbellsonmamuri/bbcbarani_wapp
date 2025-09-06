@@ -1,5 +1,5 @@
 """
-Centralized API configuration API URL configuration
+Centralized API configuration API URL configuration  
 """
 from django.urls import path
 from . import views

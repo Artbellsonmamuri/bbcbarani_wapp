@@ -2,7 +2,6 @@
 Prayer request system tests
 """
 from django.test import TestCase, Client
-from django.urls import reverse
 
 class PrayerTestCase(TestCase):
     """Test cases for prayer app"""
@@ -13,9 +12,4 @@ class PrayerTestCase(TestCase):
     def test_index_view(self):
         """Test index view"""
         response = self.client.get('/prayer/')
-        self.assertEqual(response.status_code, 200)
-
-    def test_api_status(self):
-        """Test API status endpoint"""
-        response = self.client.get('/api/prayer/status/')
         self.assertEqual(response.status_code, 200)

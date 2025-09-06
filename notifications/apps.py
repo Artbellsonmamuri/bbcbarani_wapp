@@ -7,10 +7,3 @@ class NotificationsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'notifications'
     verbose_name = 'Real-Time Notifications'
-
-    def ready(self):
-        """Initialize app when Django starts"""
-        try:
-            import notifications.signals
-        except ImportError:
-            pass

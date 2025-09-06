@@ -13,4 +13,4 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
-# App-specific models will be added here
+# App models will be added here as needed

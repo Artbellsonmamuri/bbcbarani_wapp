@@ -1,5 +1,5 @@
 """
-Prayer request system API URL configuration
+Prayer request system API URL configuration  
 """
 from django.urls import path
 from . import views

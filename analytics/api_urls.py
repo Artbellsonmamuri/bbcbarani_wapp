@@ -1,5 +1,5 @@
 """
-Site analytics tracking API URL configuration
+Site analytics tracking API URL configuration  
 """
 from django.urls import path
 from . import views
