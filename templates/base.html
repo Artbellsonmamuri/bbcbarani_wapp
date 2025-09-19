@@ -4,49 +4,377 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Bible Baptist Church Barani{% endblock %}</title>
+    <meta name="description" content="{% block description %}Bible Baptist Church Barani - A welcoming church community{% endblock %}">
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .navbar-brand { font-weight: 600; }
-        .jumbotron { 
-            background: linear-gradient(135deg, #2c3e50, #3498db);
-            color: white; padding: 3rem 2rem; border-radius: 10px; margin-bottom: 2rem;
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-gray: #f8f9fa;
         }
-        .btn-primary { background-color: #3498db; border-color: #3498db; }
-        .btn-primary:hover { background-color: #2c3e50; border-color: #2c3e50; }
+        
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+        }
+        
+        .navbar-brand { 
+            font-weight: 600;
+            font-size: 1.3rem;
+        }
+        
+        .hero-section { 
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white; 
+            padding: 4rem 2rem; 
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .hero-section h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .hero-section .lead {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .btn-primary { 
+            background-color: var(--accent-color); 
+            border-color: var(--accent-color);
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+        }
+        
+        .btn-primary:hover { 
+            background-color: #c0392b; 
+            border-color: #c0392b; 
+        }
+        
+        .card {
+            border: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .content-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .event-date {
+            background: var(--accent-color);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+            min-width: 80px;
+        }
+        
+        footer {
+            background: var(--primary-color);
+            color: white;
+            margin-top: 3rem;
+        }
+        
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .ministry-card {
+            height: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-section {
+                padding: 2rem 1rem;
+            }
+        }
+/* Hero Carousel Styles */
+.hero-slide {
+  height: 500px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .hero-slide { height: 600px; }
+}
+
+@media (min-width: 1200px) {
+  .hero-slide { height: 700px; }
+}
+
+/* Carousel fade transition */
+.carousel-fade .carousel-item {
+  opacity: 0;
+  transition-property: opacity;
+  background-color: transparent;
+}
+
+.carousel-fade .carousel-item.active {
+  opacity: 1;
+}
+
+/* Enhanced carousel controls */
+.carousel-control-prev, .carousel-control-next {
+  width: 5%;
+  opacity: 0.8;
+}
+
+.carousel-control-prev:hover, .carousel-control-next:hover {
+  opacity: 1;
+}
+
+/* Better indicators */
+.carousel-indicators [data-bs-target] {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin: 0 4px;
+  background-color: rgba(255,255,255,0.7);
+  border: none;
+}
+
+.carousel-indicators [data-bs-target].active {
+  background-color: white;
+  transform: scale(1.2);
+}
+
+.carousel-placeholder {
+  border: 2px dashed #dee2e6;
+  border-radius: 10px;
+}
+
+/* Homepage Content Section */
+.homepage-content-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  min-height: 60vh;
+}
+
+.content-wrapper {
+  padding: 2rem 0;
+}
+
+.church-logo img {
+  border: 4px solid var(--primary-color);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.church-logo-placeholder {
+  animation: pulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
+}
+
+.featured-verse {
+  border-left: 4px solid var(--primary-color);
+  position: relative;
+}
+
+.featured-verse::before {
+  content: '"';
+  font-size: 4rem;
+  color: var(--primary-color);
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  opacity: 0.3;
+}
+
+.service-times-card {
+  max-width: 350px;
+  margin: 0 auto;
+}
+
+.logo-wrapper {
+  position: sticky;
+  top: 2rem;
+}
+
+/* Clean Image Carousel (No Text Overlays) */
+.carousel-slide {
+  height: 400px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .carousel-slide { height: 500px; }
+}
+
+@media (min-width: 1200px) {
+  .carousel-slide { height: 600px; }
+}
+
+/* Carousel fade transition */
+.carousel-fade .carousel-item {
+  opacity: 0;
+  transition-property: opacity;
+  background-color: transparent;
+}
+
+.carousel-fade .carousel-item.active {
+  opacity: 1;
+}
+
+/* Enhanced carousel controls */
+.carousel-control-prev, .carousel-control-next {
+  width: 5%;
+  opacity: 0.8;
+}
+
+.carousel-control-prev:hover, .carousel-control-next:hover {
+  opacity: 1;
+}
+
+/* Better indicators */
+.carousel-indicators [data-bs-target] {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin: 0 4px;
+  background-color: rgba(255,255,255,0.7);
+  border: none;
+}
+
+.carousel-indicators [data-bs-target].active {
+  background-color: white;
+  transform: scale(1.2);
+}
+
+.carousel-placeholder {
+  border: 2px dashed #dee2e6;
+  border-radius: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+  .homepage-content-section {
+    min-height: auto;
+  }
+  
+  .logo-wrapper {
+    position: static;
+    margin-top: 3rem;
+  }
+  
+  .church-logo img {
+    max-width: 200px;
+  }
+  
+  .carousel-slide {
+    height: 300px;
+  }
+}
+
+
+
     </style>
+    
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
         <div class="container">
-            <a class="navbar-brand" href="/">Bible Baptist Church Barani</a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="/admin/">Admin</a>
-                <a class="nav-link" href="/api/">API</a>
-                <a class="nav-link" href="/health/">Health</a>
+            <a class="navbar-brand text-primary" href="{% url 'cms:home' %}">
+                <i class="bi bi-house-heart"></i> Bible Baptist Church Barani
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'cms:home' %}">Home</a>
+                    </li>
+                    {% for nav_page in navigation_pages %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ nav_page.get_absolute_url }}">{{ nav_page.title }}</a>
+                    </li>
+                    {% endfor %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'cms:post_list' %}">News</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'cms:event_list' %}">Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'cms:ministry_list' %}">Ministries</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/">Admin</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
-
-    <main class="container mt-4">
-        {% block content %}
-        <div class="jumbotron">
-            <h1 class="display-4">Welcome to Bible Baptist Church Barani</h1>
-            <p class="lead">Your church management system is running successfully!</p>
-            <hr class="my-4">
-            <p>Access the admin panel to manage your church content.</p>
-            <a class="btn btn-primary btn-lg" href="/admin/" role="button">Go to Admin</a>
-        </div>
-        {% endblock %}
+    
+    <main>
+        {% block content %}{% endblock %}
     </main>
-
-    <footer class="bg-light py-4 mt-5">
-        <div class="container text-center">
-            <p>&copy; {% now "Y" %} Bible Baptist Church Barani. All rights reserved.</p>
+    
+    <footer class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5><i class="bi bi-house-heart"></i> Bible Baptist Church Barani</h5>
+                    <p>A welcoming community of faith, growing together in Christ.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'cms:home' %}" class="text-light">Home</a></li>
+                        <li><a href="{% url 'cms:post_list' %}" class="text-light">News</a></li>
+                        <li><a href="{% url 'cms:event_list' %}" class="text-light">Events</a></li>
+                        <li><a href="{% url 'cms:ministry_list' %}" class="text-light">Ministries</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contact Info</h5>
+                    <p>
+                        <i class="bi bi-geo-alt"></i> Church Address<br>
+                        <i class="bi bi-telephone"></i> (555) 123-4567<br>
+                        <i class="bi bi-envelope"></i> info@bbcbarani.org
+                    </p>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center">
+                <p>&copy; {% now "Y" %} Bible Baptist Church Barani. All rights reserved.</p>
+            </div>
         </div>
     </footer>
-
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    {% block scripts %}{% endblock %}
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} - Bible Baptist Church Barani{% endblock %}
+{% block description %}{{ post.excerpt|default:post.content|striptags|truncatewords:20 }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <article>
+                {% if post.is_featured %}
+                <span class="badge bg-danger mb-3">Featured Post</span>
+                {% endif %}
+                
+                <h1 class="mb-3">{{ post.title }}</h1>
+                
+                <div class="text-muted mb-4">
+                    <i class="bi bi-calendar"></i> {{ post.created_at|date:"F d, Y" }}
+                    {% if post.author %}
+                    <i class="bi bi-person ms-3"></i> {{ post.author.get_full_name|default:post.author.username }}
+                    {% endif %}
+                </div>
+                
+                {% if post.featured_image %}
+                <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="content-image img-fluid mb-4">
+                {% endif %}
+                
+                <div class="content">
+                    {{ post.content|safe }}
+                </div>
+                
+                {% if tags %}
+<div class="mt-4">
+  <strong>Tags:</strong>
+  {% for tag in tags %}
+    <span class="badge bg-secondary ms-1">{{ tag }}</span>
+  {% endfor %}
+</div>
+{% endif %}
+
+            </article>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Related Posts</h5>
+                </div>
+                <div class="card-body">
+                    {% for related_post in related_posts %}
+                    <div class="mb-3">
+                        <h6><a href="{{ related_post.get_absolute_url }}" class="text-decoration-none">{{ related_post.title }}</a></h6>
+                        <small class="text-muted">{{ related_post.created_at|date:"M d, Y" }}</small>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted">No related posts available.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col">
+            <a href="{% url 'cms:post_list' %}" class="btn btn-outline-primary">
+                <i class="bi bi-arrow-left"></i> Back to News
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

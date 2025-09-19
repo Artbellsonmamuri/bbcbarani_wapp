@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Ministries - Bible Baptist Church Barani{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h1 class="text-center mb-5">Our Ministries</h1>
+
+  {% if ministries %}
+  <div class="row">
+    {% for ministry in ministries %}
+    <div class="col-lg-4 col-md-6 mb-4">
+      <div class="card h-100">
+        {% if ministry.featured_image %}
+        <img src="{{ ministry.featured_image.url }}" class="card-img-top" alt="{{ ministry.title }}" style="height: 250px; object-fit: cover;">
+        {% endif %}
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">{{ ministry.title }}</h5>
+          {% if ministry.target_audience %}
+          <span class="badge bg-primary mb-2 align-self-start">{{ ministry.target_audience }}</span>
+          {% endif %}
+          <p class="card-text flex-grow-1">{{ ministry.description|striptags|truncatewords:25 }}</p>
+          {% if ministry.leader_name %}
+          <small class="text-muted d-block"><i class="bi bi-person"></i> {{ ministry.leader_name }}{% if ministry.leader_title %} ({{ ministry.leader_title }}){% endif %}</small>
+          {% endif %}
+        </div>
+        <div class="card-footer bg-transparent">
+          <a href="{{ ministry.get_absolute_url }}" class="btn btn-primary">Learn More</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="alert alert-info text-center">
+    <h4>Ministries Coming Soon</h4>
+    <p>We're working on adding information about our ministries. Check back soon!</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

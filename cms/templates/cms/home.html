@@ -1,0 +1,445 @@
+{% extends "base.html" %}
+{% block title %}Bible Baptist Church Barani{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Original BBC Barani Styling */
+body {
+    background: #a2a09b;
+    background: linear-gradient(135deg, hsla(236.6,0%,53.52%,1) 0%, hsla(236.6,0%,53.52%,0) 70%),
+                linear-gradient(25deg, hsla(220.75,34.93%,26.52%,1) 10%, hsla(220.75,34.93%,26.52%,0) 80%),
+                linear-gradient(315deg, hsla(46.42,36.62%,83.92%,1) 15%, hsla(46.42,36.62%,83.92%,0) 80%),
+                linear-gradient(245deg, hsla(191.32,50.68%,56.45%,1) 100%, hsla(191.32,50.68%,56.45%,0) 70%);
+    min-height: 100vh;
+    font-family: sans-serif, Arial;
+    margin: 0;
+    padding: 0;
+}
+
+.main-wrapper {
+    min-height: calc(100vh - 90px);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.content-wrap {
+    margin: auto;
+    padding: 40px;
+    width: 100%;
+    max-width: 1200px;
+    color: #fff;
+}
+
+.logo {
+    max-width: 200px;
+    display: block;
+    margin: 0 auto 30px auto;
+}
+
+.logo img {
+    width: 100%;
+    filter: brightness(0) invert(1);
+}
+
+h1 {
+    text-align: center;
+    color: #fff;
+    font-size: 24px !important;
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: #fff;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.welcome-section {
+    text-align: center;
+    margin-bottom: 40px;
+    background: rgba(255,255,255,0.1);
+    padding: 30px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+}
+
+.welcome-text {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.pastor-signature {
+    font-style: italic;
+    margin-top: 20px;
+    color: #e6e6e6;
+}
+
+.verse-section {
+    background: rgba(62, 77, 89, 0.8);
+    padding: 20px;
+    border-radius: 6px;
+    text-align: center;
+    margin: 30px 0;
+}
+
+.verse-text {
+    font-style: italic;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.verse-reference {
+    font-weight: bold;
+    color: #7fb3d3;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin: 40px 0;
+}
+
+.service-times-card, .location-card {
+    background: rgba(255,255,255,0.1);
+    padding: 25px;
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+}
+
+.service-times-card h3, .location-card h3 {
+    color: #fff;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.service-day {
+    margin-bottom: 10px;
+}
+
+.service-day strong {
+    color: #7fb3d3;
+}
+
+.address {
+    line-height: 1.6;
+}
+
+.live-stream-section {
+    background: rgba(220, 58, 65, 0.9);
+    padding: 25px;
+    border-radius: 10px;
+    text-align: center;
+    margin: 30px 0;
+}
+
+.live-stream-section h3 {
+    color: #fff;
+    margin-bottom: 15px;
+}
+
+.watch-btn {
+    background: #fff;
+    color: #dc3a41;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.watch-btn:hover {
+    background: #f0f0f0;
+    color: #dc3a41;
+}
+
+.mission-section {
+    margin: 40px 0;
+}
+
+.mission-item {
+    background: rgba(255,255,255,0.08);
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #7fb3d3;
+}
+
+.mission-title {
+    color: #7fb3d3;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.mission-verse {
+    font-style: italic;
+    color: #cccccc;
+    margin-top: 10px;
+}
+
+.contact-section {
+    background: rgba(62, 77, 89, 0.8);
+    padding: 25px;
+    border-radius: 10px;
+    margin-top: 40px;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.contact-item {
+    margin-bottom: 10px;
+}
+
+.contact-label {
+    font-weight: bold;
+    color: #7fb3d3;
+}
+
+/* Carousel Integration */
+.hero-carousel {
+    margin: 20px 0 40px 0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.carousel-item img {
+    height: 400px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.carousel-caption {
+    background: rgba(0,0,0,0.7);
+    border-radius: 8px;
+    padding: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .info-grid, .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .content-wrap {
+        padding: 20px;
+    }
+    
+    .carousel-item img {
+        height: 250px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="main-wrapper">
+    <div class="content-wrap">
+        <!-- Church Logo -->
+        {% if homepage and homepage.hero_image %}
+        <div class="logo">
+            <img src="{{ homepage.hero_image.url }}" alt="Bible Baptist Church Barani Logo">
+        </div>
+        {% endif %}
+
+        <!-- Hero Carousel (if slides exist) -->
+        {% if hero_slides %}
+        <div class="hero-carousel">
+            <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="6000">
+                <div class="carousel-inner">
+                    {% for slide in hero_slides %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <img src="{{ slide.background_image.url }}" alt="{{ slide.title }}">
+                        <div class="carousel-caption">
+                            <h3>{{ slide.title }}</h3>
+                            {% if slide.subtitle %}
+                            <p>{{ slide.subtitle }}</p>
+                            {% endif %}
+                            {% if slide.has_cta %}
+                            <a href="{{ slide.call_to_action_url }}" class="btn btn-light">{{ slide.call_to_action_text }}</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                {% if hero_slides|length > 1 %}
+                <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            {% if homepage %}
+            <h1>{{ homepage.hero_title|default:"Bible Baptist Church Barani" }}</h1>
+            
+            {% if homepage.welcome_text %}
+            <div class="welcome-text">
+                {{ homepage.welcome_text|safe }}
+            </div>
+            {% else %}
+            <div class="welcome-text">
+                <p>Greetings from the Bible Baptist Church Barani! Join our weekly services via LIVE! video streaming straight from our church auditorium in Sacro St., Brgy. Barani, City of Batac, Ilocos Norte, Philippines. Feel free to browse through our online facility so you may know the activities and ministries that we do. It is our desire to share with you the joy and peace of knowing and having the Lord Jesus Christ as your personal Saviour.</p>
+                
+                <p>You are welcome not only to this website but to our church as well. We would love to see you at Bible Baptist Church Barani. Have a blessed day!</p>
+                
+                <div class="pastor-signature">Pastor of BBC Barani</div>
+            </div>
+            {% endif %}
+            {% endif %}
+        </div>
+
+        <!-- Featured Verse -->
+        {% if homepage and homepage.featured_verse %}
+        <div class="verse-section">
+            <div class="verse-text">"{{ homepage.featured_verse }}"</div>
+            {% if homepage.featured_verse_reference %}
+            <div class="verse-reference">{{ homepage.featured_verse_reference }}</div>
+            {% endif %}
+        </div>
+        {% else %}
+        <div class="verse-section">
+            <div class="verse-text">"Unto Him be glory in the church by Christ Jesus throughout all ages, world without end. Amen."</div>
+            <div class="verse-reference">EPHESIANS 3:21</div>
+        </div>
+        {% endif %}
+
+        <!-- Service Times & Location -->
+        <div class="info-grid">
+            <div class="service-times-card">
+                <h3>Service Times</h3>
+                {% if homepage and homepage.service_times %}
+                {{ homepage.service_times|safe }}
+                {% else %}
+                <div class="service-day"><strong>Sunday:</strong><br>8:00 AM, 9:00 AM, 5:00 PM</div>
+                <div class="service-day"><strong>Wednesday:</strong><br>5:30 PM</div>
+                {% endif %}
+            </div>
+            
+            <div class="location-card">
+                <h3>Location</h3>
+                <div class="address">
+                    10-S Sacro St., Brgy. Barani<br>
+                    City of Batac<br>
+                    Ilocos Norte, PH 2906
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Stream Section -->
+        <div class="live-stream-section">
+            <h3>Join us online for live worship services and special events</h3>
+            {% if homepage and homepage.call_to_action_url %}
+            <a href="{{ homepage.call_to_action_url }}" class="watch-btn">{{ homepage.call_to_action_text|default:"Watch Now" }}</a>
+            {% else %}
+            <a href="#" class="watch-btn">Watch Now</a>
+            {% endif %}
+        </div>
+
+        <!-- Mission Section -->
+        <div class="mission-section">
+            <h2>Our Mission</h2>
+            
+            <div class="mission-item">
+                <div class="mission-title">Mission Statement</div>
+                <p>Glorifying God through the fulfillment of Christ's Great Commission</p>
+                <div class="mission-verse">Matthew 28:18-20</div>
+            </div>
+            
+            <div class="mission-item">
+                <div class="mission-title">Our Purpose</div>
+                <p>To glorify God through evangelism and discipleship, baptism of believers and fulfillment of all of Christ's commands</p>
+                <div class="mission-verse">Ephesians 3:21 ; Matthew 28:18-20 ; Acts 1:8 ; Acts 2:41-47</div>
+            </div>
+            
+            <div class="mission-item">
+                <div class="mission-title">Our Vision</div>
+                <p>To be a church that reaches and shines out in evangelism, discipleship and missions</p>
+                <div class="mission-verse">Philippians 2:15 ; I Thessalonians 1:8 ; II Corinthians 8:7</div>
+            </div>
+            
+            <div class="mission-item">
+                <div class="mission-title">Our Goal</div>
+                <p>To work in unity through the leadership of the man of God towards the spiritual maturity of all members so that, in turn, each one may contribute to every area of the ministry and thereby build up of the whole church (Eph 4:12).</p>
+                <div class="mission-verse">Ephesians 3:21 ; Matthew 28:18-20 ; Acts 1:8 ; Acts 2:41-47</div>
+            </div>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="contact-section">
+            <h2>Contact Information</h2>
+            <div class="contact-grid">
+                <div>
+                    <div class="contact-item">
+                        <span class="contact-label">Cellphone:</span> +63 948 292-0644
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-label">General:</span> biblebapbarani@gmail.com
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-label">Pastor:</span> ptrsamrafaael@gmail.com
+                    </div>
+                </div>
+                <div>
+                    <div class="contact-item">
+                        <span class="contact-label">Address:</span><br>
+                        10-S Sacro St., Brgy. Barani<br>
+                        City of Batac, Ilocos Norte, PH 2906
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-label">Phone:</span> +63 948 292-0644
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Latest News (if available) -->
+        {% if featured_posts %}
+        <div class="mission-section">
+            <h2>Latest News</h2>
+            {% for post in featured_posts %}
+            <div class="mission-item">
+                <div class="mission-title">{{ post.title }}</div>
+                <p>{{ post.excerpt|default:post.content|striptags|truncatewords:30 }}</p>
+                <div class="mission-verse">{{ post.created_at|date:"F d, Y" }}</div>
+                <a href="{{ post.get_absolute_url }}" style="color: #7fb3d3;">Read More</a>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Upcoming Events (if available) -->
+        {% if upcoming_events %}
+        <div class="mission-section">
+            <h2>Upcoming Events</h2>
+            {% for event in upcoming_events %}
+            <div class="mission-item">
+                <div class="mission-title">{{ event.title }}</div>
+                <p>{{ event.description|striptags|truncatewords:25 }}</p>
+                <div class="mission-verse">
+                    {{ event.start_date|date:"F d, Y g:i A" }}
+                    {% if event.location %} • {{ event.location }}{% endif %}
+                </div>
+                <a href="{{ event.get_absolute_url }}" style="color: #7fb3d3;">View Details</a>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

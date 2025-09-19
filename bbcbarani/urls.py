@@ -34,7 +34,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # Home page
-    path('', home_view, name='home'),
+    path("", include("cms.urls")),
 
     # API endpoints
     path('api/', include('api.urls', namespace='api')),

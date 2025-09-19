@@ -7,6 +7,11 @@ from .base import *
 DEBUG = True
 ALLOWED_HOSTS = ['*']
 
+# Allow Cloudflare Tunnel domain for POST requests
+CSRF_TRUSTED_ORIGINS = [
+    "https://wa.bbcbarani.org",
+]
+
 # Use console email backend for development
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
